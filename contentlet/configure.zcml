@@ -1,0 +1,24 @@
+<configure
+  xmlns="http://namespaces.repoze.org/bfg"
+  xmlns:meta="http://namespaces.zope.org/meta">
+
+  <include package="repoze.bfg.includes" />
+
+  <utility
+    factory=".expression.ProviderExpression"
+    provides="chameleon.zpt.interfaces.IExpressionTranslator"
+    name="contentprovider"
+    />
+
+
+  <meta:directives>
+
+    <meta:directive
+      name="contentprovider"
+      schema="contentlet.zcml.IContentProviderDirective"
+      handler="contentlet.zcml.contentprovider"
+      />
+
+  </meta:directives>
+
+</configure>
