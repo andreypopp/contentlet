@@ -51,23 +51,23 @@ class TestGetProvider(unittest.TestCase):
     def test_get_provider_success(self):
         self._registerProvider(DummyContentProvider("content"), "name")
         request = self._createRequest(None)
-        provider = get_provider(request, "name")
+        provider = get_provider("name", request=request)
         from contentlet.interfaces import IContentProvider
         self.assertTrue(IContentProvider.providedBy(provider))
         self.assertEqual(provider(request, None), "content")
 
     def test_get_provider_no_provider(self):
         request = self._createRequest(None)
-        self.assertRaises(LookupError, get_provider, request, "name")
+        self.assertRaises(LookupError, get_provider, "name", request=request)
 
     def test_get_provider_for_context(self):
         from zope.interface import implementedBy
         self._registerProvider(DummyContentProvider("content"), "name",
                                context_iface=implementedBy(DummyContext))
         request = self._createRequest(DummyContext())
-        provider = get_provider(request, "name")
+        provider = get_provider("name", request=request)
         from contentlet.interfaces import IContentProvider
         self.assertTrue(IContentProvider.providedBy(provider))
         self.assertEqual(provider(request, None), "content")
         request = self._createRequest(None)
-        self.assertRaises(LookupError, get_provider, request, "name")
+        self.assertRaises(LookupError, get_provider, "name", request=request)
