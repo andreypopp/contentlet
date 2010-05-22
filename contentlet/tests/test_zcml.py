@@ -9,7 +9,7 @@ from repoze.bfg.registry import Registry
 
 from contentlet.interfaces import IContentProvider
 
-__all__ = []
+__all__ = ["TestContentProviderDirective"]
 
 
 class TestContentProviderDirective(unittest.TestCase):
