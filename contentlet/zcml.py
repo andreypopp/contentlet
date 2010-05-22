@@ -6,7 +6,7 @@ from zope.schema import TextLine
 
 from repoze.bfg.threadlocal import get_current_registry
 
-from contentlet.configuration import Configuration
+from contentlet.configuration import Configurator
 
 __all__ = ["IContentProviderDirective",
            "contentprovider"]
@@ -31,7 +31,7 @@ def contentprovider(_context, provider=None, name=None, context=None):
     registry = get_current_registry()
 
     def register():
-        config = Configuration(registry)
+        config = Configurator(registry)
         config.add_content_provider(provider, name, context=context)
 
     _context.action(

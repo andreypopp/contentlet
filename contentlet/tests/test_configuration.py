@@ -6,7 +6,7 @@ from zope.interface import implements
 
 from contentlet.interfaces import IContentProvider
 
-__all__ = ["TestConfiguration"]
+__all__ = ["TestConfigurator"]
 
 
 class DummyContentProvider(object):
@@ -24,7 +24,7 @@ class DummyContext(object):
     pass
 
 
-class TestConfiguration(unittest.TestCase):
+class TestConfigurator(unittest.TestCase):
 
     def setUp(self):
         from repoze.bfg.registry import Registry
@@ -37,13 +37,13 @@ class TestConfiguration(unittest.TestCase):
         return self.registry.adapters.lookup(
             (context_iface,), IContentProvider, name=name, default=None)
 
-    def _createConfiguration(self):
-        from contentlet.configuration import Configuration
-        return Configuration(self.registry)
+    def _createConfigurator(self):
+        from contentlet.configuration import Configurator
+        return Configurator(self.registry)
 
     def test_add_content_provider_no_context(self):
         from zope.interface import implementedBy
-        config = self._createConfiguration()
+        config = self._createConfigurator()
         config.add_content_provider(DummyContentProvider("content"),
                                     name="name")
         provider = self._getProvider("name")
@@ -56,7 +56,7 @@ class TestConfiguration(unittest.TestCase):
 
     def test_add_content_provider_for_context(self):
         from zope.interface import implementedBy
-        config = self._createConfiguration()
+        config = self._createConfigurator()
         config.add_content_provider(DummyContentProvider("content"),
                                     name="name", context=DummyContext)
         provider = self._getProvider("name",
