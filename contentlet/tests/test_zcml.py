@@ -16,7 +16,8 @@ class TestContentProviderDirective(unittest.TestCase):
 
     def setUp(self):
         self.registry = Registry()
-        testing.setUp(registry=self.registry)
+        self.request = testing.DummyRequest()
+        testing.setUp(registry=self.registry, request=self.request)
 
     def tearDown(self):
         testing.tearDown()
