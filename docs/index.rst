@@ -89,9 +89,9 @@ full piece of configuration code looks like this::
     config.add_content_provider(my_contentprovider, "name", context=MyContext)
     ...
 
-We need to create to objects for configuring our application, sometimes it is
-better to cook own configurator. There is ``ContentletConfiguratorMixin`` comes
-to mind::
+We need to create two objects for configuring our application (BFG and
+contentlet configurators), sometimes it is better to cook own configurator.
+There is ``ContentletConfiguratorMixin`` comes to mind::
 
     ...
     from repoze.bfg.configuration import Configurator as BFGConfigurator
