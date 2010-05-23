@@ -2,5 +2,5 @@ Contentlet - framework for creating UI
 ======================================
 
 Contentlet is a framework for creating composable and reusable web UI. It is
-modeled after zope.contentprovider/zopo.viewlet but more simpler and easy to
-use. Also, it is for using with repoze.bfg.
+modeled after zope.contentprovider/zope.viewlet but more simpler and easy to
+use. Also, it is for using with repoze.bfg. For more documentation please go `here <http://packages.python.org/contentlet>`_.
