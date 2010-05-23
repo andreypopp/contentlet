@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Contentlet's documentation!
-======================================
+Contentlet — UI framework for web
+=================================
 
 Contentlet is a framework for creating composable and reusable UI for web. It
 is designed by looking at `zope.contentprovider
@@ -49,16 +49,18 @@ Configuring content providers
 
 Content providers can be registered by name and for specific request's context. There are two ways for registering content providers for application:
 
-* Imperative, via `contentlet.Configurator`.
+* Imperative, via ``contentlet.Configurator``.
 
-* Declarative, with ZCML directive `contentprovider`.
+* Declarative, with ZCML directive ``contentprovider``.
 
 Imperative configuration
 ------------------------
 
-For configuring you application imperatively, you should use `contentlet.Configurator` object::
+For configuring you application imperatively, you should use ``contentlet.Configurator`` object::
 
     ...
+    import contentlet
+
     config = contentlet.Configurator(registry=you_application_registry)
     config.add_content_provider(my_contentprovider, "name")
     ...
@@ -66,22 +68,29 @@ For configuring you application imperatively, you should use `contentlet.Configu
 or if you want to register content provider for specific context::
 
     ...
+    import contentlet
+
     config = contentlet.Configurator(registry=you_application_registry)
     config.add_content_provider(my_contentprovider, "name", context=MyContext)
     ...
 
-But where `you_application_registry` comes from? Often it is registry, that was created by `repoze.bfg.configuration.Configurator` object, so the more full piece look like this::
+But where ``you_application_registry`` comes from? Often it is registry, that
+was created by ``repoze.bfg.configuration.Configurator`` object, so the more
+full piece of configuration code looks like this::
 
 
     ...
-    bfg_config = Configurator()
+    import repoze.bfg
+    import contentlet
+
+    bfg_config = repoze.bfg.configuration.Configurator()
     bfg_config.add_view(my_view)
     config = contentlet.Configurator(registry=bfg_config.registry)
     config.add_content_provider(my_contentprovider, "name", context=MyContext)
     ...
 
 We need to create to objects for configuring our application, sometimes it is
-better to cook own configurator. There is `ContentletConfiguratorMixin` comes
+better to cook own configurator. There is ``ContentletConfiguratorMixin`` comes
 to mind::
 
     ...
@@ -96,13 +105,13 @@ to mind::
     config.add_content_provider(my_contentprovider, "name", context=MyContext)
     ...
 
-So our custom `Configurator` object now suitable to configure both BFG and
+So our custom ``Configurator`` object now suitable to configure both BFG and
 contentlet aspects of application configuration.
 
 Declarative configuration
 -------------------------
 
-Declarative configuration can be made with `contentprovider` ZCML directive::
+Declarative configuration can be made with ``contentprovider`` ZCML directive::
 
     <configure>
         <include package="contentlet" />
@@ -125,8 +134,8 @@ or for registering content provider for specific context::
             />
     </configure>
 
-Note, that you should include ZCML configuration from `contentlet` package in
-order to use `contentprovider` ZCML directive.
+Note, that you should include ZCML configuration from ``contentlet`` package in
+order to use ``contentprovider`` ZCML directive.
 
 Using content providers
 =======================
@@ -138,10 +147,10 @@ Using content providers inside views
 ------------------------------------
 
 For using content providers inside views, you should use
-`contentlet.get_provider` or `contentlet.query_provider` function. The
+``contentlet.get_provider`` or ``contentlet.query_provider`` function. The
 difference between them is the only handling of failure of content provider
-lookup. The `contentlet.get_provider` will raise `LookupError` while
-`contentlet.query_provider` will just return `None` value.
+lookup. The ``contentlet.get_provider`` will raise ``LookupError`` while
+``contentlet.query_provider`` will just return ``None`` value.
 
 For query content provider by name and then render it in variable::
 
@@ -159,10 +168,10 @@ You can also query provider that is specific to context::
     rendered = provider(request, context)
     ...
 
-By default, `contentlet.query_provider` and `contentlet.get_provider` will use
-global ZCA registry for lookups. This is not desired behaviour while using
+By default, ``contentlet.query_provider`` and ``contentlet.get_provider`` will
+use global ZCA registry for lookups. This is not desired behaviour while using
 repoze.bfg web-framework, cause it uses per-application registry. View code can
-get it via request's `registry` attribiute, so querying content providers in
+get it via request's ``registry`` attribiute, so querying content providers in
 repoze.bfg's view usually done in following way::
 
     ...
@@ -171,15 +180,18 @@ repoze.bfg's view usually done in following way::
     rendered = provider(request, context)
     ...
 
-So, `registry` keyword argument specify what component registry to use for
+So, ``registry`` keyword argument specify what component registry to use for
 content provider lookup.
 
 Using content providers inside Chameleon templates
 --------------------------------------------------
 
 Usually it is better to use content providers from inside templates than from
-views. Repoze.bfg comes with `Chameleon <http://chameleon.repoze.org/>`_ templating engine and Contentlet provides custom TALES expression translator for rendering content providers::
+views. Repoze.bfg comes with `Chameleon <http://chameleon.repoze.org/>`_
+templating engine and Contentlet provides custom TALES expression translator
+for rendering content providers::
 
     <div tal:replace="contentprovider:name"></div>
 
-This `div` element will be replace with piece of markup, returned by content provided with name `name`.
+This ``div`` element will be replace with piece of markup, returned by content
+provider with name ``name``.
