@@ -44,8 +44,8 @@ Content providers look like a simple views (in MTV frameworks, like repoze.bfg)
 and they are even can be registered as views and vice-versa. So content
 provider can be rendered as separate page and can be embedded in another page.
 
-Configuration
-=============
+Configuring content providers
+=============================
 
 Content providers can be registered by name and for specific request's context. There are two ways for registering content providers for application:
 
@@ -127,3 +127,59 @@ or for registering content provider for specific context::
 
 Note, that you should include ZCML configuration from `contentlet` package in
 order to use `contentprovider` ZCML directive.
+
+Using content providers
+=======================
+
+After registering some content providers, it is always good to query and use
+them later in view or template code.
+
+Using content providers inside views
+------------------------------------
+
+For using content providers inside views, you should use
+`contentlet.get_provider` or `contentlet.query_provider` function. The
+difference between them is the only handling of failure of content provider
+lookup. The `contentlet.get_provider` will raise `LookupError` while
+`contentlet.query_provider` will just return `None` value.
+
+For query content provider by name and then render it in variable::
+
+    ...
+    from contentlet import query_provider
+    provider = query_provider("provider_name")
+    rendered = provider(request, context)
+    ...
+
+You can also query provider that is specific to context::
+
+    ...
+    from contentlet import query_provider
+    provider = query_provider("provider_name", context=context)
+    rendered = provider(request, context)
+    ...
+
+By default, `contentlet.query_provider` and `contentlet.get_provider` will use
+global ZCA registry for lookups. This is not desired behaviour while using
+repoze.bfg web-framework, cause it uses per-application registry. View code can
+get it via request's `registry` attribiute, so querying content providers in
+repoze.bfg's view usually done in following way::
+
+    ...
+    from contentlet import query_provider
+    provider = query_provider("provider_name", registry=request.registry)
+    rendered = provider(request, context)
+    ...
+
+So, `registry` keyword argument specify what component registry to use for
+content provider lookup.
+
+Using content providers inside Chameleon templates
+--------------------------------------------------
+
+Usually it is better to use content providers from inside templates than from
+views. Repoze.bfg comes with `Chameleon <http://chameleon.repoze.org/>`_ templating engine and Contentlet provides custom TALES expression translator for rendering content providers::
+
+    <div tal:replace="contentprovider:name"></div>
+
+This `div` element will be replace with piece of markup, returned by content provided with name `name`.
