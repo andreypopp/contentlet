@@ -2,3 +2,5 @@ TODO list
 ---------
 
 * Less depend on repoze.bfg, maybe it is better to use ZCA API.
+
+* Integration tests.
