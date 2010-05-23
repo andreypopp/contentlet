@@ -53,3 +53,14 @@ class TestProviderExpression(unittest.TestCase):
         </div>""", None)
         rendered = template()
         self.assertEqual(rendered, "content")
+
+    def test_no_provider(self):
+        from contentlet.expression import ProviderExpression
+        self._registerTranslator(ProviderExpression())
+        from chameleon.zpt.template import PageTemplate
+        template = PageTemplate("""\
+        <div tal:replace="contentprovider:name">
+          Hello World!
+        </div>""", None)
+        rendered = template()
+        self.assertEqual(rendered, "")

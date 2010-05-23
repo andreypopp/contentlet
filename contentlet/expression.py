@@ -7,15 +7,19 @@ from chameleon.zpt import expressions
 
 from repoze.bfg.threadlocal import get_current_request
 
-from contentlet.provider import get_provider
+from contentlet.provider import query_provider
 
 __all__ = ["ProviderExpression"]
 
 
 def render_contentprovider(name):
     request = get_current_request()
-    context = request.context
-    provider = get_provider(name, request=request)
+    attrs = request.__dict__
+    context = attrs.get("context")
+    registry = attrs.get("registry")
+    provider = query_provider(name, context=context, registry=registry)
+    if provider is None:
+        return ""
     return provider(context, request)
 
 

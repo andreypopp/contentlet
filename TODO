@@ -1,4 +1,2 @@
 TODO list
 ---------
-
-* Refactor out `contentlet.provider` to provide API independent of repoze.bfg.
