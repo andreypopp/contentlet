@@ -1,3 +1,8 @@
+0.1.1
+-----
+
+* Fixed missed import of ``ContentletConfiguratorMixin``.
+
 0.1
 ---
 
