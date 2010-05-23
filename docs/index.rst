@@ -95,9 +95,9 @@ There is ``ContentletConfiguratorMixin`` comes to mind::
 
     ...
     from repoze.bfg.configuration import Configurator as BFGConfigurator
-    from contentlet import Configurator as ContentletConfigurator
+    from contentlet import ContentletConfiguratorMixin
 
-    class Configurator(BFGConfigurator, ContentletConfigurator):
+    class Configurator(BFGConfigurator, ContentletConfiguratorMixin):
         pass
 
     config = Configurator()
