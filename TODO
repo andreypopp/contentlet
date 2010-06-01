@@ -1,6 +1,16 @@
 TODO list
 ---------
 
+* Configuration API based in venussian.
+
 * Less depend on repoze.bfg, maybe it is better to use ZCA API.
 
 * Integration tests.
+
+* Port zope.viewlets.
+
+* Support for Jinja2 template engine.
+
+* More docs about usage scenarious.
+
+* New theme for docs -- plainwalk.
