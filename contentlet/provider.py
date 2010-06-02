@@ -1,7 +1,7 @@
 """ Content provider infrastructure."""
 
 from zope.interface import providedBy
-from zope.component import getGlobalSiteManager
+from zope.component import getSiteManager
 
 from contentlet.interfaces import IContentProvider
 
@@ -18,7 +18,7 @@ def query_provider(name, context=None, registry=None):
     argument.
     """
     if registry is None:
-        registry = getGlobalSiteManager()
+        registry = getSiteManager()
     provider = registry.adapters.lookup(
          (providedBy(context),), IContentProvider, name=name, default=None)
     return provider
