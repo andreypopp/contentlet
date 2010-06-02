@@ -23,12 +23,6 @@ class ContentletConfiguratorMixin(object):
         self.registry.registerAdapter(
             provider, (context,), IContentProvider, name=name)
 
-    def add_viewlet_manager(self, name, viewlet_manager=None, context=None):
-        """ Add viewlet manager."""
-
-    def add_viewlet(self, manager_name, name, viewlet, context=None):
-        """ Add viewlet for specific viewlet manager by name."""
-
 
 class Configurator(ContentletConfiguratorMixin):
     """ Configurator for contentlet."""
