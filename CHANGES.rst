@@ -1,3 +1,10 @@
+0.2
+---
+
+* Added ``contentlet.provider.render_`` as shortcut for rendering providers.
+
+* Do not depend on repoze.bfg at all.
+
 0.1.1
 -----
 
