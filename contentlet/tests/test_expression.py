@@ -2,8 +2,7 @@
 
 import unittest
 
-from repoze.bfg.registry import Registry
-from repoze.bfg import testing
+from contentlet.tests import IsolatedRegistryTestCase
 
 __all__ = ["TestProviderExpression"]
 
@@ -24,33 +23,26 @@ class DummyRequest(object):
         self.context = context
 
 
-class TestProviderExpression(unittest.TestCase):
-
-    def setUp(self):
-        self.registry = Registry()
-        request = testing.DummyRequest()
-        request.registry = self.registry
-        request.context = None
-        testing.setUp(registry=self.registry, request=request)
+class TestProviderExpression(IsolatedRegistryTestCase):
 
     def _registerTranslator(self, translator):
+        from zope.component import getSiteManager
         from chameleon.zpt.interfaces import IExpressionTranslator
-        self.registry.registerUtility(translator, IExpressionTranslator,
-                                      name="contentprovider")
+        getSiteManager().registerUtility(translator, IExpressionTranslator,
+                                         name="contentprovider")
 
     def _registerProvider(self, provider, name, context_iface=None):
         from zope.interface import Interface
         from contentlet.interfaces import IContentProvider
         if context_iface is None:
             context_iface = Interface
-        self.registry.registerAdapter(
+        from zope.component import getSiteManager
+        getSiteManager().registerAdapter(
             provider, (context_iface,), IContentProvider, name=name)
 
     def _createRequest(self, context=None):
-        return DummyRequest(self.registry, context=context)
-
-    def tearDown(self):
-        testing.tearDown()
+        from zope.component import getSiteManager
+        return DummyRequest(getSiteManager(), context=context)
 
     def test_it(self):
         from contentlet.expression import ProviderExpression

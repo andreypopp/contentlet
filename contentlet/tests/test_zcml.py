@@ -4,23 +4,13 @@ import unittest
 
 from zope.interface import implements
 
-from repoze.bfg import testing
-from repoze.bfg.registry import Registry
-
 from contentlet.interfaces import IContentProvider
+from contentlet.tests import IsolatedRegistryTestCase
 
 __all__ = ["TestContentProviderDirective"]
 
 
-class TestContentProviderDirective(unittest.TestCase):
-
-    def setUp(self):
-        self.registry = Registry()
-        self.request = testing.DummyRequest()
-        testing.setUp(registry=self.registry, request=self.request)
-
-    def tearDown(self):
-        testing.tearDown()
+class TestContentProviderDirective(IsolatedRegistryTestCase):
 
     def _callContentProvider(self, *args, **kwargs):
         from contentlet.zcml import contentprovider
@@ -30,7 +20,8 @@ class TestContentProviderDirective(unittest.TestCase):
         if context_iface is None:
             from zope.interface import Interface
             context_iface = Interface
-        return self.registry.adapters.lookup(
+        from zope.component import getSiteManager
+        return getSiteManager().adapters.lookup(
             (context_iface,), IContentProvider, name=name, default=None)
 
     def test_contentprovider_no_context(self):

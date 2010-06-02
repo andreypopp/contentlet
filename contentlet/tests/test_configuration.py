@@ -5,6 +5,7 @@ import unittest
 from zope.interface import implements
 
 from contentlet.interfaces import IContentProvider
+from contentlet.tests import IsolatedRegistryTestCase
 
 __all__ = ["TestConfigurator"]
 
@@ -24,22 +25,20 @@ class DummyContext(object):
     pass
 
 
-class TestConfigurator(unittest.TestCase):
-
-    def setUp(self):
-        from repoze.bfg.registry import Registry
-        self.registry = Registry()
+class TestConfigurator(IsolatedRegistryTestCase):
 
     def _getProvider(self, name, context_iface=None):
+        from zope.component import getSiteManager
         if context_iface is None:
             from zope.interface import Interface
             context_iface = Interface
-        return self.registry.adapters.lookup(
+        return getSiteManager().adapters.lookup(
             (context_iface,), IContentProvider, name=name, default=None)
 
     def _createConfigurator(self):
+        from zope.component import getSiteManager
         from contentlet.configuration import Configurator
-        return Configurator(self.registry)
+        return Configurator(getSiteManager())
 
     def test_add_content_provider_no_context(self):
         from zope.interface import implementedBy
