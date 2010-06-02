@@ -1,10 +1,9 @@
 """ ZCML directives."""
 
-from zope.interface import Interface
+from zope.component import getSiteManager
 from zope.configuration.fields import GlobalObject
+from zope.interface import Interface
 from zope.schema import TextLine
-
-from repoze.bfg.threadlocal import get_current_registry
 
 from contentlet.configuration import Configurator
 
@@ -28,7 +27,7 @@ class IContentProviderDirective(Interface):
 
 
 def contentprovider(_context, provider=None, name=None, context=None):
-    registry = get_current_registry()
+    registry = getSiteManager()
 
     def register():
         config = Configurator(registry)
