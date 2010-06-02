@@ -17,6 +17,13 @@ class DummyProvider(object):
         return self.content
 
 
+class DummyRequest(object):
+
+    def __init__(self, registry, context=None):
+        self.registry = registry
+        self.context = context
+
+
 class TestProviderExpression(unittest.TestCase):
 
     def setUp(self):
@@ -39,6 +46,9 @@ class TestProviderExpression(unittest.TestCase):
         self.registry.registerAdapter(
             provider, (context_iface,), IContentProvider, name=name)
 
+    def _createRequest(self, context=None):
+        return DummyRequest(self.registry, context=context)
+
     def tearDown(self):
         testing.tearDown()
 
@@ -51,7 +61,7 @@ class TestProviderExpression(unittest.TestCase):
         <div tal:replace="contentprovider:name">
           Hello World!
         </div>""", None)
-        rendered = template()
+        rendered = template(request=self._createRequest())
         self.assertEqual(rendered, "content")
 
     def test_no_provider(self):
@@ -62,5 +72,5 @@ class TestProviderExpression(unittest.TestCase):
         <div tal:replace="contentprovider:name">
           Hello World!
         </div>""", None)
-        rendered = template()
+        rendered = template(request=self._createRequest())
         self.assertEqual(rendered, "")

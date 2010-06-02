@@ -198,3 +198,8 @@ for rendering content providers::
 
 This ``div`` element will be replace with piece of markup, returned by content
 provider with name ``name``.
+
+.. warning::
+    Temlate should have access for repoze.bfg request object via `request`
+    variable. It can be done via passing current request from views or using
+    renderers, which automatically do that.
