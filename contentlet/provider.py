@@ -6,7 +6,8 @@ from zope.component import getGlobalSiteManager
 from contentlet.interfaces import IContentProvider
 
 __all__ = ["query_provider",
-           "get_provider"]
+           "get_provider",
+           "render_provider"]
 
 
 def query_provider(name, context=None, registry=None):
@@ -35,3 +36,17 @@ def get_provider(name, context=None, registry=None):
     if provider is None:
         raise LookupError("No provider was found for name '%s'" % name)
     return provider
+
+
+def render_provider(name, request, context=None, registry=None):
+    """ Render content provider by `name` or by `name` and `context`.
+
+    It is a shortcut for querying content provider and then calling it.
+    If no content provider was found -- function will return empty string.
+    """
+    if registry is None:
+        registry = getattr(request, "request", None)
+    provider = query_provider(name, context=context, registry=registry)
+    if provider is None:
+        return ""
+    return provider(request, context)
