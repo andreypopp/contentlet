@@ -5,6 +5,8 @@
 
 * Do not depend on repoze.bfg at all.
 
+* For all component registrations and lookups use hookable getSiteManager API.
+
 0.1.1
 -----
 
