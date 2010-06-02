@@ -12,6 +12,9 @@ is designed by looking at `zope.contentprovider
 <http://pypi.python.org/pypi/zope.viewlet>`_ and for using with `repoze.bfg
 <http://bfg.repoze.org>`_ web framework.
 
+.. toctree::
+   :maxdepth: 2
+
 Introduction
 ============
 
