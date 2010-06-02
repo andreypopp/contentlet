@@ -1,7 +1,5 @@
 """ TALES expression."""
 
-from zope.interface import providedBy
-
 from chameleon.core import types
 from chameleon.zpt import expressions
 
@@ -13,6 +11,7 @@ __all__ = ["ProviderExpression"]
 
 
 def render_contentprovider(name):
+    """ Helper for rendering content provider by its name."""
     request = get_current_request()
     attrs = request.__dict__
     context = attrs.get("context")
@@ -24,7 +23,7 @@ def render_contentprovider(name):
 
 
 class ProviderExpression(expressions.ExpressionTranslator):
-    """ TALES translator for executing content providers."""
+    """ TALES translator for rendering content providers."""
 
     symbol = "_render_contentprovider"
 
