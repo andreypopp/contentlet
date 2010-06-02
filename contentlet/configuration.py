@@ -3,7 +3,7 @@
 from zope.interface import Interface
 from zope.interface import implementedBy
 from zope.interface.interfaces import IInterface
-from zope.component import getGlobalSiteManager
+from zope.component import getSiteManager
 
 from contentlet.interfaces import IContentProvider
 
@@ -35,5 +35,5 @@ class Configurator(ContentletConfiguratorMixin):
 
     def __init__(self, registry=None):
         if registry is None:
-            registry = getGlobalSiteManager()
+            registry = getSiteManager()
         self.registry = registry
